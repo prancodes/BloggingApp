@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org"
+    th:replace="~{fragments/layout :: layout('Blogging App', ~{::body})}">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Blogging App</title>
+</head>
+
+<body>
+    <div class="container my-4">
+        <div th:if="${articles.isEmpty()}">
+            <div class="alert alert-info" role="alert">
+                No articles found. Why not add one?
+            </div>
+        </div>
+
+        <div class="row">
+            <div th:each="article : ${articles}" class="col-md-6 col-lg-4 mb-4">
+                <div class="card h-100 shadow-sm">
+                    <div class="card-body d-flex flex-column">
+                        <h5 class="card-title" th:text="${article.title}">Article Title</h5>
+                        <h6 class="card-subtitle mb-2 text-muted" th:text="'By: ' + ${article.author}">Author</h6>
+                        <p class="card-subtitle mb-2 text-muted small" th:if="${article.updatedAt}"
+                            th:text="'Published: ' + ${#temporals.format(article.updatedAt, 'MMM dd, yyyy hh:mm a')}">
+                            Published on...
+                        </p>
+                        <p class="card-text flex-grow-1" th:text="${article.content}">Article content snippet...</p>
+                        <div class="mt-auto">
+                            <a th:href="@{/edit/{id}(id=${article.id})}" class="btn btn-primary btn-sm me-2">Update</a>
+
+                            <form th:action="@{/delete/{id}(id=${article.id})}" method="post" th:method="delete" class="d-inline">
+                                <button class="btn btn-danger btn-sm" type="submit">Delete</button>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</body>
+
+</html>
