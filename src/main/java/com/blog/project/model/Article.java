@@ -14,6 +14,8 @@ import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.Table;
+import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.Size;
 
 @Entity
 @Table(name = "articles")
@@ -24,12 +26,18 @@ public class Article {
     @JdbcTypeCode(SqlTypes.BINARY)
     private UUID id;
 
+    // Validations
+    @NotBlank(message = "Title is required")
+    @Size(max = 255, message = "Title cannot be longer than 255 characters")
     @Column(nullable = false, length = 255)
     private String title;
 
+    @NotBlank(message = "Content is required")
     @Column(nullable = false, columnDefinition = "TEXT")
     private String content;
 
+    @NotBlank(message = "Author is required")
+    @Size(max = 100, message = "Author cannot be longer than 100 characters")
     @Column(nullable = false, length = 100)
     private String author;
 
