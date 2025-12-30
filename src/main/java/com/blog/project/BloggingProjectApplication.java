@@ -2,12 +2,15 @@ package com.blog.project;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
+import org.springframework.scheduling.annotation.EnableScheduling;
 
 // --- Swagger Configuration (optional)
 // import io.swagger.v3.oas.annotations.OpenAPIDefinition;
 // import io.swagger.v3.oas.annotations.info.Info;
 
+
 @SpringBootApplication
+// Swagger UI -> http://localhost:8080/swagger-ui.html
 // @OpenAPIDefinition(
 // 	info = @Info(
 // 		title = "Blogging Project API",
@@ -15,6 +18,7 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 // 		description = "A simple API for managing blog articles."
 // 	)
 // )
+@EnableScheduling // keep-alive pings
 public class BloggingProjectApplication {
 
 	public static void main(String[] args) {
