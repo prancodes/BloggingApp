@@ -1,9 +1,9 @@
 package com.blog.project.controller;
 
+import java.util.Objects;
 import java.util.UUID;
 
 import org.springframework.beans.factory.annotation.Autowired;
-// import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -12,7 +12,6 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
-// import org.springframework.web.server.ResponseStatusException;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 // import validation classes
@@ -49,7 +48,8 @@ public class BlogController {
         if (result.hasErrors()) {
             return "add";  // Return to the 'add' form if there are errors
         }
-        repo.save(article);
+        // Fix: Explicitly enforce non-null to satisfy 'save' contract
+        repo.save(Objects.requireNonNull(article));
         ra.addFlashAttribute("message", "Article Created");
         return "redirect:/";
     }
@@ -57,14 +57,8 @@ public class BlogController {
     // Show Update Article Form
     @GetMapping("/edit/{id}")
     public String editArticleForm(@PathVariable UUID id, Model model) {
-        // Optional<Article> article = repo.findById(id); -> this is valid too.. without exception handling
-
-        // NOTE: Default exception handling using ResponseStatusException
-        // Article article = repo.findById(id)
-        //     .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Article not found"));
-
-        Article article = repo.findById(id)
-        // Throw our custom exception instead
+        // Fix: Explicitly enforce non-null for 'findById'
+        Article article = repo.findById(Objects.requireNonNull(id))
             .orElseThrow(() -> new ArticleNotFoundException("Article not found with ID: " + id));
 
         model.addAttribute("article", article);
@@ -79,7 +73,9 @@ public class BlogController {
         if(result.hasErrors()) {
             return "update";  // Return to the 'update' form if there are errors
         }
-        Article existing = repo.findById(id)
+        
+        // Fix: Explicitly enforce non-null for 'findById'
+        Article existing = repo.findById(Objects.requireNonNull(id))
             .orElseThrow(() -> new ArticleNotFoundException("Article not found with ID: " + id));
 
         existing.setTitle(form.getTitle());
@@ -96,10 +92,12 @@ public class BlogController {
     @DeleteMapping("/delete/{id}")
     public String deleteArticle(@PathVariable UUID id, RedirectAttributes ra) {
 
-        Article article = repo.findById(id)
+        // Fix: Explicitly enforce non-null for 'findById'
+        Article article = repo.findById(Objects.requireNonNull(id))
             .orElseThrow(() -> new ArticleNotFoundException("Article not found with ID: " + id));
         
-        repo.delete(article);
+        // Fix: Explicitly enforce non-null for 'delete'
+        repo.delete(Objects.requireNonNull(article));
         ra.addFlashAttribute("message", "Article Deleted");
         return "redirect:/";
     }
