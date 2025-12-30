@@ -1,0 +1,39 @@
+services:
+  db:
+    image: mysql:8.0
+    container_name: blog-mysql-db
+    ports:
+      - "3307:3306" # For local MySQL Workbench connection
+    environment:
+      MYSQL_ROOT_PASSWORD: ${DB_ROOT_PASSWORD}
+      MYSQL_DATABASE: ${DB_NAME}
+      MYSQL_USER: ${DB_USER}
+      MYSQL_PASSWORD: ${DB_PASS}
+    volumes:
+      - db-data:/var/lib/mysql
+    networks:
+      - blog-network
+
+  app:
+    image: prancodes/blogging-app:latest
+    container_name: blog-spring-web
+    ports:
+      - "8080:8080"
+    environment:
+      DB_URL: jdbc:mysql://db:3306/${DB_NAME}
+      DB_USER: ${DB_USER}
+      DB_PASS: ${DB_PASS}
+      SPRING_PROFILES_ACTIVE: dev
+    depends_on:
+      - db
+    networks:
+      - blog-network
+
+volumes:
+  db-data:
+
+networks:
+  blog-network:
+    driver: bridge
+    name: blogapp-network
+  
