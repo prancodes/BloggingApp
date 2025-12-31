@@ -19,15 +19,17 @@ public class KeepAliveService {
     // 2. Flag to track if we've already logged the warning (Stateful singleton)
     private boolean hasLoggedMissingUrl = false;
 
-    // Constructor Injection (Best Practice)
-    public KeepAliveService(@Value("${app.public.url:}") String appUrl, RestClient.Builder builder) {
+    // FIXED: Removed RestClient.Builder from arguments to avoid "No qualifying bean" error
+    public KeepAliveService(@Value("${app.public.url:}") String appUrl) {
         this.appUrl = appUrl;
-        this.restClient = builder.build();
+        // Manually build the client. Simple and robust.
+        this.restClient = RestClient.builder().build();
     }
 
     // Runs every 45 seconds
     @Scheduled(fixedRate = 45000)
     public void pingSelf() {
+        // Assign field to a local variable for thread-safe null analysis
         final String targetUrl = this.appUrl;
         // 3. Logic check: Is URL valid?
         if (targetUrl == null || targetUrl.isEmpty() || targetUrl.contains("localhost")) {
