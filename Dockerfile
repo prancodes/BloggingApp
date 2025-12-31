@@ -1,6 +1,6 @@
 # --- Stage 1: The Build Stage ---
-# Use an official Maven image with Java 21 installed
-FROM maven:3.9.8-eclipse-temurin-21 AS builder
+# Use the latest Maven 3 (automatically pull latest 3.9+) image compatible with Java 25
+FROM maven:3-eclipse-temurin-25-alpine AS builder
 
 # Set the working directory in the container
 WORKDIR /blogApp
@@ -21,13 +21,13 @@ RUN mvn clean package -DskipTests
 
 
 # --- Stage 2: The Final Runtime Stage ---
-# Use the smallest possible, stable Java 21 JRE (Java Runtime Environment)
-FROM eclipse-temurin:21-jre-alpine
+# Use the official Eclipse Temurin Java 25 JRE on Alpine Linux
+FROM eclipse-temurin:25-jre-alpine
 
 # --- LABELS ---
 LABEL org.opencontainers.image.source="https://github.com/prancodes/BloggingApp"
 LABEL org.opencontainers.image.title="BloggingProject"
-LABEL org.opencontainers.image.description="A full-featured blogging platform built with Spring Boot, Thymeleaf, JPA, and MySQL."
+LABEL org.opencontainers.image.description="A full-featured blogging platform built with Spring Boot 4, Thymeleaf, JPA, and MySQL."
 
 # Set the working directory
 WORKDIR /blogApp
