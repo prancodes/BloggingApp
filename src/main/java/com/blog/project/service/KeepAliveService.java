@@ -16,24 +16,23 @@ public class KeepAliveService {
     private final RestClient restClient;
     private final String appUrl;
 
-    // 2. Flag to track if we've already logged the warning (Stateful singleton)
+    // Flag to ensure we log the missing URL warning only once
     private boolean hasLoggedMissingUrl = false;
 
-    // FIXED: Removed RestClient.Builder from arguments to avoid "No qualifying bean" error
     public KeepAliveService(@Value("${app.public.url:}") String appUrl) {
         this.appUrl = appUrl;
-        // Manually build the client. Simple and robust.
+        // Build the RestClient manually to avoid dependency injection issues
         this.restClient = RestClient.builder().build();
     }
 
-    // Runs every 45 seconds
+    // Runs every 45 seconds to keep the Render instance awake
     @Scheduled(fixedRate = 45000)
     public void pingSelf() {
         // Assign field to a local variable for thread-safe null analysis
         final String targetUrl = this.appUrl;
-        // 3. Logic check: Is URL valid?
+
+        // Validation: Check if the URL is valid
         if (targetUrl == null || targetUrl.isEmpty() || targetUrl.contains("localhost")) {
-            // Only print warning once
             if (!hasLoggedMissingUrl) {
                 logger.warn("⚠️ KeepAlive: Skipping ping (URL is localhost or empty). Set 'app.public.url' in your environment.");
                 hasLoggedMissingUrl = true; // Mark as logged so it doesn't repeat
@@ -42,13 +41,16 @@ public class KeepAliveService {
         }
 
         try {
-            // 4. RestClient implementation (Synchronous)
+            // UPDATED: Point to the Spring Boot Actuator endpoint
+            // This endpoint is lightweight and configured to NOT touch the DB
+            String healthUrl = targetUrl.endsWith("/") ? targetUrl + "actuator/health" : targetUrl + "/actuator/health";
+
             restClient.get()
-                    .uri(targetUrl)
+                    .uri(healthUrl)
                     .retrieve()
-                    .toBodilessEntity(); // We don't care about the body, just the connection
+                    .toBodilessEntity(); // Discard body, we just need the 200 OK status
             
-            // Optional: logger.info("Ping successful"); 
+            // logger.info("✅ Ping successful to {}", healthUrl); 
         } catch (Exception e) {
             logger.error("❌ KeepAlive Ping Failed: {}", e.getMessage());
         }
