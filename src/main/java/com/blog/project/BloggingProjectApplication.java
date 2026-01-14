@@ -2,7 +2,6 @@ package com.blog.project;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
-import org.springframework.scheduling.annotation.EnableScheduling;
 
 // --- Swagger Configuration (optional)
 // import io.swagger.v3.oas.annotations.OpenAPIDefinition;
@@ -18,7 +17,6 @@ import org.springframework.scheduling.annotation.EnableScheduling;
 // 		description = "A simple API for managing blog articles."
 // 	)
 // )
-@EnableScheduling // keep-alive pings
 public class BloggingProjectApplication {
 
 	public static void main(String[] args) {
