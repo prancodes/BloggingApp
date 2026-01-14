@@ -1,5 +1,0 @@
-{"properties": [{
-  "name": "app.public.url",
-  "type": "java.lang.String",
-  "description": "The public URL of the application for keep-alive pings."
-}]}

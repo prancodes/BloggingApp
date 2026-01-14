@@ -3,7 +3,6 @@
 ![Java](https://img.shields.io/badge/Java-25-orange)
 ![Spring Boot](https://img.shields.io/badge/Spring_Boot-4.0.1-green)
 ![Docker](https://img.shields.io/badge/Docker-Enabled-blue)
-![License](https://img.shields.io/badge/License-MIT-lightgrey)
 
 A lightweight Spring Boot blogging application that demonstrates a full CRUD (Create, Read, Update, Delete) flow for articles. This project uses Spring Data JPA, Thymeleaf templates, and UUID primary keys stored as `BINARY(16)`.
 
@@ -11,7 +10,17 @@ This is a learning project showcasing best practices in Spring Boot development.
 
 ---
 
-🚀 **Live Link:** [BlogSpace](https://blogspace24.onrender.com/)
+### 🚀 Live Link: [BlogSpace](https://github.com/prancodes/BloggingApp)
+
+---
+
+## Architecture & Design Patterns
+
+This project uses a layered architecture to ensure separation of concerns and data security:
+1. **Controller Layer**: Handles web requests and form validation.
+2. **Service Layer**: Contains business logic and orchestrates data flow between DTOs and Entities.
+3. **DTO (Data Transfer Object)**: Uses **Java 25 Records** to transfer data safely without exposing database entities.
+4. **Repository Layer**: Manages database interactions using Spring Data JPA.
 
 ---
 
@@ -35,7 +44,6 @@ This is a learning project showcasing best practices in Spring Boot development.
 - **Server-Side Rendering:** Built with Spring MVC and Thymeleaf templates for dynamic HTML generation.
 - **Exception Handling:** Global exception handler for graceful error management and user feedback.
 - **Profile-Based Configuration:** Separate environment configurations for development and production.
-- **Production Keep-Alive Service:** Scheduled pinging mechanism to keep the app alive on free hosting platforms (production profile only).
 
 ---
 
@@ -52,10 +60,12 @@ src/
 │   │       │   └── BlogController.java          (Spring MVC controller for web requests)
 │   │       ├── model/
 │   │       │   └── Article.java                 (JPA entity with UUID ID and timestamps)
+│   │       ├── dto/
+│   │       │   └── ArticleDTO.java              (Data Transfer Object as Java Record)
 │   │       ├── repository/
 │   │       │   └── BlogRepository.java          (Spring Data JPA repository)
 │   │       ├── service/
-│   │       │   └── KeepAliveService.java        (Scheduled task for production)
+│   │       │   └── ArticleService.java          (Business Logic & DTO Mapping)
 │   │       └── exception/
 │   │           ├── ArticleNotFoundException.java (Custom exception)
 │   │           └── GlobalExceptionHandler.java  (Centralized error handling)
