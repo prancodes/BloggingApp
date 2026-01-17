@@ -3,6 +3,7 @@
 ![Java](https://img.shields.io/badge/Java-25-orange)
 ![Spring Boot](https://img.shields.io/badge/Spring_Boot-4.0.1-green)
 ![Docker](https://img.shields.io/badge/Docker-Enabled-blue)
+![PWA](https://img.shields.io/badge/PWA-Enabled-purple)
 
 A lightweight Spring Boot blogging application that demonstrates a full CRUD (Create, Read, Update, Delete) flow for articles. This project uses Spring Data JPA, Thymeleaf templates, and UUID primary keys stored as `BINARY(16)`.
 
@@ -10,7 +11,7 @@ This is a learning project showcasing best practices in Spring Boot development.
 
 ---
 
-### 🚀 Live Link: [BlogSpace](https://github.com/prancodes/BloggingApp)
+### 🚀 Live Link: [BlogSpace](https://blogspace-802504734501.asia-south1.run.app)
 
 ---
 
@@ -37,6 +38,7 @@ This project uses a layered architecture to ensure separation of concerns and da
 
 ## ✨ Key Features
 
+- **Installable PWA:** Fully configured `site.webmanifest` and Service Worker (`sw.js`) allow the app to be installed natively on Android, iOS, and Desktop with offline support.
 - **Complete CRUD Operations:** Create, read, update, and delete articles through an intuitive web interface.
 - **UUID Primary Keys:** Uses Java `UUID` with Hibernate's `GenerationType.UUID` strategy, optimized as `BINARY(16)` storage for database performance.
 - **Input Validation:** Client-side and server-side validation using Jakarta validation annotations (`@NotBlank`, `@Size`).
@@ -75,6 +77,8 @@ src/
 │       ├── application-dev.properties         (Development overrides)
 │       ├── application-prod.properties        (Production overrides)
 │       ├── static/
+│       │   ├── favicons/                      (Favicon files)
+│       │   ├── sw.js                          (Service Worker for PWA)
 │       │   └── validation.js                  (Client-side validation scripts)
 │       └── templates/                         (Thymeleaf templates)
 │           ├── index.html                     (Article list view)
