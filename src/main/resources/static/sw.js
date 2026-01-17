@@ -39,10 +39,9 @@ self.addEventListener('install', (event) => {
 
 // 2. FETCH EVENT (Strategy: Network First -> Cache -> Dynamic Cache)
 self.addEventListener('fetch', (event) => {
-  // We only cache GET requests (not POST/PUT/DELETE)
-  if (event.request.method !== 'GET') {
-    return;
-  }
+  // Skip cross-origin requests, POST requests, and Chrome Extensions
+  if (event.request.method !== 'GET') return;
+  if (!event.request.url.startsWith('http')) return; // Skip non-HTTP requests
 
   event.respondWith(
     fetch(event.request)
