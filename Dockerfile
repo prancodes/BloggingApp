@@ -16,7 +16,7 @@ RUN mvn dependency:go-offline
 COPY src ./src
 
 # 4. Build the application. We skip tests for a production build.
-# This will create 'project-0.0.1-SNAPSHOT.jar' based on pom.xml
+# This will create 'project-1.0.0.jar' based on pom.xml
 RUN mvn clean package -DskipTests
 
 
@@ -40,7 +40,7 @@ USER bloguser:appgroup
 
 # Copy the built .jar file from the 'builder' stage
 # We rename it to blogApp.jar for simplicity
-COPY --from=builder /blogApp/target/project-0.0.1-SNAPSHOT.jar blogApp.jar
+COPY --from=builder /blogApp/target/project-1.0.0.jar blogApp.jar
 
 # Expose the port your application runs on, specified in your application.properties
 EXPOSE 8080

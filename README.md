@@ -11,7 +11,7 @@ This is a learning project showcasing best practices in Spring Boot development.
 
 ---
 
-### 🚀 Live Link: [BlogSpace](https://blogspace-802504734501.asia-south1.run.app)
+### 🚀 Live Link: [BlogSpace](https://blogspace-802504734501.us-central1.run.app)
 
 ---
 
@@ -179,7 +179,7 @@ mvnw.cmd spring-boot:run
 Or run the compiled jar after building:
 
 ```cmd
-java -jar target/project-0.0.1-SNAPSHOT.jar
+java -jar target/project-1.0.0.jar
 ```
 
 The application will be available at http://localhost:8080 (unless you changed the port in `application.properties`).
